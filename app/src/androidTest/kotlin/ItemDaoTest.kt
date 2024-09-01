@@ -67,4 +67,33 @@ class ItemDaoTest {
         val allItems = itemDao.getAllItems().first()
         assertEquals(listOf(apples, bananas), allItems)
     }
+
+    /**
+     * This test changes the all properties of the items.
+     */
+    @Test
+    @Throws(Exception::class)
+    fun daoUpdateItem_updateItemInDB() {
+        runBlocking {
+            addOneItemToDb()
+            val newApples = Item(1, "Apples", 15.0, 25)
+            itemDao.update(newApples)
+            val applesFromDB = itemDao.getItem(apples.id).first()
+            assertEquals(newApples, applesFromDB)
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun daoUpdatesItems_updatesItemsInDB() {
+        runBlocking {
+            addTwoItemsToDb()
+            val newApples = Item(1, "Apples", 15.0, 25)
+            val newBananas = Item(2, "Bananas", 20.0, 50)
+            itemDao.update(newApples)
+            itemDao.update(newBananas)
+            val applesFromDB = itemDao.getAllItems().first()
+            assertEquals(listOf(newApples, newBananas), applesFromDB)
+        }
+    }
 }

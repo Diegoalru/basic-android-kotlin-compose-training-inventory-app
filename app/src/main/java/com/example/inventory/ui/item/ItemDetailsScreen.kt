@@ -101,7 +101,7 @@ fun ItemDetailsScreen(
     ) { innerPadding ->
         ItemDetailsBody(
             itemDetailsUiState = uiState.value,
-            onSellItem = { },
+            onSellItem = { viewModel.reduceQuantityByOne() },
             onDelete = { },
             modifier = Modifier
                 .padding(
@@ -135,7 +135,7 @@ private fun ItemDetailsBody(
             onClick = onSellItem,
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.small,
-            enabled = true
+            enabled = !itemDetailsUiState.outOfStock
         ) {
             Text(stringResource(R.string.sell))
         }
@@ -242,8 +242,8 @@ fun ItemDetailsScreenPreview() {
     InventoryTheme {
         ItemDetailsBody(
             ItemDetailsUiState(
-                outOfStock = true,
-                itemDetails = ItemDetails(1, "Pen", "$100", "10")
+                itemDetails = ItemDetails(1, "Pen", "20", "10"),
+                outOfStock = false
             ),
             onSellItem = {},
             onDelete = {}
