@@ -52,11 +52,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Item
+import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
+import androidx.compose.runtime.collectAsState
 
 object ItemDetailsDestination : NavigationDestination {
     override val route = "item_details"
@@ -68,10 +71,13 @@ object ItemDetailsDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemDetailsScreen(
+    modifier: Modifier = Modifier,
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    viewModel: ItemDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val uiState = viewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             InventoryTopAppBar(
@@ -94,7 +100,7 @@ fun ItemDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         ItemDetailsBody(
-            itemDetailsUiState = ItemDetailsUiState(),
+            itemDetailsUiState = uiState.value,
             onSellItem = { },
             onDelete = { },
             modifier = Modifier
