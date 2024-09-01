@@ -107,4 +107,14 @@ class ItemDaoTest {
             assertEquals(emptyList<Item>(), allItems)
         }
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun daoGetItem_returnsItemFromDB() {
+        runBlocking {
+            addOneItemToDb()
+            val itemFromDB = itemDao.getItem(apples.id).first()
+            assertEquals(apples, itemFromDB)
+        }
+    }
 }
