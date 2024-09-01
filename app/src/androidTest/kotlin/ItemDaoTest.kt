@@ -96,4 +96,15 @@ class ItemDaoTest {
             assertEquals(listOf(newApples, newBananas), applesFromDB)
         }
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun daoDeleteItem_deletesItemFromDB() {
+        runBlocking {
+            addOneItemToDb()
+            itemDao.delete(apples)
+            val allItems = itemDao.getAllItems().first()
+            assertEquals(emptyList<Item>(), allItems)
+        }
+    }
 }
